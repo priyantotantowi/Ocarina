@@ -29,19 +29,31 @@ import java.lang.reflect.Field;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-public class PhoneHelper {
+/**
+ * Created by Priyanto Tantowi.
+ *
+ * PhoneHelper is helper to all about phone info like
+ * Android OS Version, Imei Number, Brand Name, Model Name
+ * and etc.
+ */
+
+public abstract class PhoneHelper {
     private static final int CALL_PHONE = 1;
 
     private static Activity activity;
     private static String phoneNumber;
 
+    /**
+     * This function returns Android OS number (ex: 4.1.2, 5.0, 5.1, etc)
+     */
     public static String getAndroidOSVersion() {
-        // TODO : Get Android OS number (ex: 4.1.2, 5.1, etc)
         return Build.VERSION.RELEASE;
     }
 
+    /**
+     * This function returns Android OS name (ex: Jelly Bean, Lollipop, etc)
+     */
     public static String getAndroidOSVersionName() {
-        // TODO : Get Android OS name (ex: Jelly Bean, Lollipop, etc)
         StringBuilder builder = new StringBuilder();
         builder.append("android : ").append(Build.VERSION.RELEASE);
 
@@ -67,10 +79,16 @@ public class PhoneHelper {
         return "";
     }
 
+    /**
+     * This function returns your smartphone brand (ex: Google, Samsung, Huawei, etc)
+     */
     public static String getBrand() {
         return Build.MANUFACTURER;
     }
 
+    /**
+     * This function returns your smartphone model (ex: GD1YQ, SM-G980, ANA-AN00, etc)
+     */
     public static String getModel() {
         // TODO: Get Model Device
         String manufacturer = Build.MANUFACTURER;
@@ -82,12 +100,19 @@ public class PhoneHelper {
         }
     }
 
+    /**
+     * This function returns percentage your battery level.
+     */
     public static int getBatteryLevel(Context context) {
         // TODO: Get percentage battery level now
         Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         return intent.getIntExtra("level", -1);
     }
 
+    /**
+     * This function returns IMEI number for Android OS Version 10 (Android Q) or below and
+     * return Device Id for Android OS 11 or Above.
+     */
     @SuppressLint({"MissingPermission"})
     public static String getIMEI(Context context) {
         String imei = "";
@@ -113,11 +138,17 @@ public class PhoneHelper {
         return imei;
     }
 
+    /**
+     * This function returns Device Id your phone. This number is unique.
+     */
     public static String getDeviceId(Context context) {
         // TODO: Get Device ID from Android OS
         return Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
     }
 
+    /**
+     * This function returns boolean value. True for GPS is active and false for GPS is not active
+     */
     public static boolean isGPSActive(Context context) {
         String locationProviders;
         int locationMode = 0;
@@ -136,11 +167,20 @@ public class PhoneHelper {
         }
     }
 
+    /**
+     * This function returns mobile data status in boolean value.
+     * True if mobile data is active and false if mobile data is not active.
+     */
     public static boolean isMobileDataActive(Context context) {
         // TODO: Return true if mobile data is Active
         return ConnectionHelper.isConnected(context);
     }
 
+    /**
+     * This function returns auto time and auto time zone status.
+     * True if auto time and auto time zone is active and
+     * false if not active.
+     */
     public static boolean isAutoTimeAndAutoTimeZone(Context context) {
         // TODO: If your device not set automatic time zone
         String timeSettings = android.provider.Settings.System.getString(
@@ -160,6 +200,10 @@ public class PhoneHelper {
         }
     }
 
+    /**
+     * This function returns auto time and auto time zone status.
+     * True if developer option is active and false if not active.
+     */
     public static boolean isDeveloperModeActive(Context context) {
         // TODO : If your device not active Developer Option
         int adb = Settings.Secure.getInt(context.getContentResolver(),
@@ -170,6 +214,10 @@ public class PhoneHelper {
         return adb == 1;
     }
 
+    /**
+     * This function for direct to phone call application.
+     * The parameter for this function is activity and phone number you want to call.
+     */
     public static void makeACall(final Activity activity, String phoneNumber) {
         PhoneHelper.activity = activity;
         PhoneHelper.phoneNumber = phoneNumber;
@@ -187,6 +235,10 @@ public class PhoneHelper {
 
     }
 
+    /**
+     * This function returns boolean value. True for GPS is active and false for GPS is not active
+     */
+    @Deprecated
     public static boolean getGPSActive(Context context) {
         String provider = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
@@ -217,6 +269,9 @@ public class PhoneHelper {
                 .show();
     }
 
+    /**
+     * This function for play default notification ringtone.
+     */
     public static void onPlayDefaultNotificationRingtone(Context context) {
         try {
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -227,6 +282,9 @@ public class PhoneHelper {
         }
     }
 
+    /**
+     * This function for hide virtual keyboard.
+     */
     public static void onHideKeyboard(Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         //Find the currently focused view, so we can grab the correct window token from it.
@@ -238,6 +296,9 @@ public class PhoneHelper {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    /**
+     * This function returns storage size in byte.
+     */
     public static long readStorageSize() {
         // TODO : Get a storage size
         File path = Environment.getDataDirectory();
@@ -247,6 +308,9 @@ public class PhoneHelper {
         return blockCount * blockSize;
     }
 
+    /**
+     * This function returns storage availabale size in byte.
+     */
     public static long readAvailableStorage() {
         // TODO : Get an available storage size
         File path = Environment.getDataDirectory();
@@ -256,13 +320,16 @@ public class PhoneHelper {
         return availableBlocks * blockSize;
     }
 
+    /**
+     * This function for vibrate your phone and you can set length
+     * a vibrate in seconds.
+     */
     public static void toVibrate(Context context, int seconds) {
         // TODO : To make phone vibrate
         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             v.vibrate(VibrationEffect.createOneShot(seconds * 1000, VibrationEffect.DEFAULT_AMPLITUDE));
         } else {
-            //deprecated in API 26
             v.vibrate(seconds * 1000);
         }
     }
