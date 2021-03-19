@@ -1,0 +1,2 @@
+include ':app', ':ocarinalibrary'
+rootProject.name='Ocarina'
