@@ -126,7 +126,6 @@ public class DateTimeHelper {
             datePicker.setTitle(title);
         }
         datePicker.setThemeDark(false);
-        datePicker.setAccentColor(activity.getBaseContext().getResources().getColor(activity.getTitleColor()));
         if(isMinCurrentDate) {
             datePicker.setMinDate(cur_calender);
         }
@@ -154,7 +153,6 @@ public class DateTimeHelper {
         }
         timePickerDialog.enableSeconds(false);
         timePickerDialog.setThemeDark(false);
-        timePickerDialog.setAccentColor(activity.getBaseContext().getResources().getColor(activity.getTitleColor()));
         timePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
     }
 
