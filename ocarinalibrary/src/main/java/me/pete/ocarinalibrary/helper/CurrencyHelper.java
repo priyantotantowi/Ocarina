@@ -10,7 +10,7 @@ import me.pete.ocarinalibrary.enumerator.CurrencyEnum;
  *
  * CurrencyHelper is helper all about currency.
  */
-public abstract class CurrencyHelper {
+public final class CurrencyHelper {
     /**
      * This function returns currency format from double without currency symbol.
      */

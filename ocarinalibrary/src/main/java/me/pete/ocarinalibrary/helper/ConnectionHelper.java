@@ -9,7 +9,7 @@ import android.net.NetworkInfo;
  *
  * ConnectionHelper is helper to all about connection information
  */
-public abstract class ConnectionHelper {
+public final class ConnectionHelper {
     /**
      * This function returns boolean value. True if your mobile data / Wi-Fi is available and
      * false your mobile data / Wi-Fi is not available.

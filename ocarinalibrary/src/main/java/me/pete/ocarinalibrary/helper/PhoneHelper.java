@@ -37,7 +37,7 @@ import androidx.core.content.ContextCompat;
  * and etc.
  */
 
-public abstract class PhoneHelper {
+public final class PhoneHelper {
     private static final int CALL_PHONE = 1;
 
     private static Activity activity;

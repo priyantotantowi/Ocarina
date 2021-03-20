@@ -30,12 +30,59 @@ import me.pete.ocarinalibrary.listener.OnDateSetListener;
  *
  * DateTime is helper to all about date or time info.
  */
-public class DateTimeHelper {
+public final class DateTimeHelper {
+    /**
+     * This function returns your date plus the number of days
+     */
+    public static double differenceInDay(String dateBefore, String dateAfter) {
+        double daysBetween = 0;
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date dateBefore1 = myFormat.parse(dateBefore);
+            Date dateAfter1 = myFormat.parse(dateAfter);
+            long difference = dateAfter1.getTime() - dateBefore1.getTime();
+            daysBetween = (difference / (1000*60*60*24));
+        } catch (Exception e) {
+            Log.e("differenceDate", e.toString());
+            e.printStackTrace();
+        }
+        return daysBetween;
+    }
+
+    /**
+     * This function returns difference time with time format HH:MM:SS.
+     */
+    public static String differenceInTime(String dateTimeBefore, String dateTimeAfter) {
+        String timeBetween = "00:00:00";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date date1 = null;
+        Date date2 = null;
+
+        try {
+            date1 = format.parse(dateTimeBefore);
+            date2 = format.parse(dateTimeAfter);
+
+            //in milliseconds
+            long diff = date2.getTime() - date1.getTime();
+
+            long diffSeconds = diff / 1000 % 60;
+            long diffMinutes = diff / (60 * 1000) % 60;
+            long diffHours = diff / (60 * 60 * 1000);
+
+            timeBetween = (diffHours < 10 ? "0" : "") + diffHours + ":" + (diffMinutes < 10 ? "0" : "") + diffMinutes + ":" + (diffSeconds < 10 ? "0" : "") + diffSeconds;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return timeBetween;
+    }
+
     /**
      * This function returns difference time in hour, minute or seconds.
      * You can set result what you want type for.
      */
-    public static double differenceTime(String oldTime, String newTime, TimeEnum timeEnum){
+    public static double differenceInTime(String oldTime, String newTime, TimeEnum timeEnum){
         double result = 0;
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -218,71 +265,6 @@ public class DateTimeHelper {
         result = date2.format(calendar.getTime());
 
         return result;
-    }
-
-    /**
-     * This function returns your date plus the number of days
-     */
-    public static double differentDate(String dateBefore, String dateAfter) {
-        double daysBetween = 0;
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date dateBefore1 = myFormat.parse(dateBefore);
-            Date dateAfter1 = myFormat.parse(dateAfter);
-            long difference = dateAfter1.getTime() - dateBefore1.getTime();
-            daysBetween = (difference / (1000*60*60*24));
-        } catch (Exception e) {
-            Log.e("differentDate", e.toString());
-            e.printStackTrace();
-        }
-        return daysBetween;
-    }
-
-    /**
-     * This function returns difference time with time format HH:MM:SS.
-     */
-    public static String differenceTime(String dateTimeBefore, String dateTimeAfter) {
-        String timeBetween = "00:00:00";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-        Date date1 = null;
-        Date date2 = null;
-
-        try {
-            date1 = format.parse(dateTimeBefore);
-            date2 = format.parse(dateTimeAfter);
-
-            //in milliseconds
-            long diff = date2.getTime() - date1.getTime();
-
-            long diffSeconds = diff / 1000 % 60;
-            long diffMinutes = diff / (60 * 1000) % 60;
-            long diffHours = diff / (60 * 60 * 1000);
-
-            timeBetween = (diffHours < 10 ? "0" : "") + diffHours + ":" + (diffMinutes < 10 ? "0" : "") + diffMinutes + ":" + (diffSeconds < 10 ? "0" : "") + diffSeconds;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return timeBetween;
-    }
-
-    /**
-     * This function returns difference time in day.
-     */
-    public static double differentDay(String dateBefore, String dateAfter) {
-        double daysBetween = 0;
-        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-        try {
-            Date dateBefore1 = myFormat.parse(dateBefore);
-            Date dateAfter1 = myFormat.parse(dateAfter);
-            long difference = dateAfter1.getTime() - dateBefore1.getTime();
-            daysBetween = (difference / (1000*60*60*24));
-            System.out.println("Number of Days between dates: "+daysBetween);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return daysBetween;
     }
 
     /**

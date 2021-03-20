@@ -8,7 +8,7 @@ import android.text.format.Formatter;
  *
  * StringHelper is helper to all about data type of string.
  */
-public abstract class StringHelper {
+public final class StringHelper {
     /**
      * This function is used for add space character at the end of string
      * until specified string length.

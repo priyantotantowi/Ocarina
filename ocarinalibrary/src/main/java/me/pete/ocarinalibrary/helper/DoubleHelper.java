@@ -8,7 +8,7 @@ import java.text.NumberFormat;
  *
  * DateTime is helper to all about data type of double.
  */
-public class DoubleHelper {
+public final class DoubleHelper {
     /**
      * This function returns value of double in string to replacing exponential to numeric.
      */
