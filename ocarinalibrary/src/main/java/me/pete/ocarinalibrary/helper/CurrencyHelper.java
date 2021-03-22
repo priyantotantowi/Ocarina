@@ -38,14 +38,7 @@ public final class CurrencyHelper {
                 }
             }
 
-            String cent = "";
-
-            if(currencies[1].contentEquals("0000")) {
-                cent = "00";
-            } else {
-                cent = currencies[1];
-            }
-
+            String cent = currencies[1];
 
             if(minus) {
                 return "(" + result + "." + cent + ")";
@@ -150,7 +143,7 @@ public final class CurrencyHelper {
         String result = "";
         int index = 0;
         for(int i = value.length(); i > 0; i--){
-            if(index == 3 && i != 0){
+            if(index == 3){
                 result = "," + result;
                 index = 1;
             }else{
