@@ -2,7 +2,7 @@ package me.pete.ocarinalibrary.callback;
 
 import me.pete.ocarinalibrary.enumerator.DiscountAPIResultEnum;
 
-public class DiscAPICallback {
+public abstract class DiscAPICallback {
     /**
      * This called when you after get response from API.
      */
