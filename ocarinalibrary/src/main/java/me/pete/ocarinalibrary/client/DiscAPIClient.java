@@ -128,15 +128,15 @@ public final class DiscAPIClient {
                                                     }
 
                                                     if (bonus > 0) {
-                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), bonusQty, data.getITEM(), DiscountAPIResultEnum.MIX);
+                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], data.getITEM(), DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), data.getPCODE(), bonusQty, DiscountAPIResultEnum.MIX);
                                                     } else {
-                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(),  DiscountAPIResultEnum.DISCOUNT);
+                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], data.getITEM(), DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), data.getPCODE(),0,  DiscountAPIResultEnum.DISCOUNT);
                                                     }
                                                 } else {
-                                                    discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
+                                                    discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], data.getITEM(), DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), data.getPCODE(),0, DiscountAPIResultEnum.DISCOUNT);
                                                 }
                                             } else {
-                                                discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
+                                                discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], data.getITEM(), DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), data.getPCODE(), 0, DiscountAPIResultEnum.DISCOUNT);
                                             }
                                         } catch (Exception e) {
                                             activity.runOnUiThread(new Runnable() {
@@ -183,9 +183,9 @@ public final class DiscAPIClient {
                             if (discAPIHeaderResponseJsonObject.getCODE() == 1) {
                                 for (DiscAPIHeaderDataResponseJsonObject data : discAPIHeaderResponseJsonObject.getDATA()) {
                                     if (data.getDISCOUNT() == 100) {
-                                        discAPICallback.onFinishCalculate(data.getDMSNO(), 0, data.getQTY(), data.getPCODE(), DiscountAPIResultEnum.FREEGOOD);
+                                        discAPICallback.onFinishCalculate(data.getDMSNO(), "",0, data.getPCODE(), data.getQTY(), DiscountAPIResultEnum.FREEGOOD);
                                     } else {
-                                        discAPICallback.onFinishCalculate(data.getDMSNO(), data.getDISCOUNT(), 0, data.getPCODE(), DiscountAPIResultEnum.DISCOUNT);
+                                        discAPICallback.onFinishCalculate(data.getDMSNO(), data.getPCODE(), data.getDISCOUNT(), "",0, DiscountAPIResultEnum.DISCOUNT);
                                     }
                                 }
                             } else if (discAPIHeaderResponseJsonObject.getCODE() == 0) {
