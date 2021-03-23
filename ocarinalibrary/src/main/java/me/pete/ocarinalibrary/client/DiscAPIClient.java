@@ -10,6 +10,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
+import me.pete.ocarinalibrary.callback.DiscAPICallback;
 import me.pete.ocarinalibrary.enumerator.BodyPostTypeEnum;
 import me.pete.ocarinalibrary.enumerator.DiscountAPIResultEnum;
 import me.pete.ocarinalibrary.helper.DoubleHelper;
@@ -27,9 +28,10 @@ public final class DiscAPIClient {
     private boolean isCalculate, isCancelable;
     private Activity activity;
     private DiscAPIJsonObject discAPIJsonObject;
-    private OnDiscAPIListener onDiscAPIListener;
     private ProgressDialog dialog;
     private String url;
+
+    private DiscAPICallback discAPICallback;
 
     /**
      * This function used for build a discount API before test to server.
@@ -37,14 +39,14 @@ public final class DiscAPIClient {
      * @param activity              Your Activity
      * @param url                   Your API address for discount calculate
      * @param discAPIJsonObject     Discount API JsonObject
-     * @param onDiscAPIListener     Callback of function.
+     * @param discAPICallback       Callback of function.
      * @return
      */
-    public DiscAPIClient build(Activity activity, String url, final DiscAPIJsonObject discAPIJsonObject, final OnDiscAPIListener onDiscAPIListener) {
+    public DiscAPIClient build(Activity activity, String url, final DiscAPIJsonObject discAPIJsonObject, final DiscAPICallback discAPICallback) {
         this.activity = activity;
         this.url = url;
         this.discAPIJsonObject = discAPIJsonObject;
-        this.onDiscAPIListener = onDiscAPIListener;
+        this.discAPICallback = discAPICallback;
         return this;
     }
 
@@ -94,7 +96,7 @@ public final class DiscAPIClient {
                     }
 
                     try {
-                        onDiscAPIListener.onBeforeCalculate();
+                        discAPICallback.onBeforeCalculate();
                         if(discAPIJsonObject.getDMSNO().contentEquals("")) {
                             DiscAPIResponseJsonObject discAPIResponseJsonObject = new Gson().fromJson(response, DiscAPIResponseJsonObject.class);
                             if (discAPIResponseJsonObject.getCODE() == 1) {
@@ -126,15 +128,15 @@ public final class DiscAPIClient {
                                                     }
 
                                                     if (bonus > 0) {
-                                                        onDiscAPIListener.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), bonusQty, data.getITEM(), DiscountAPIResultEnum.MIX);
+                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), bonusQty, data.getITEM(), DiscountAPIResultEnum.MIX);
                                                     } else {
-                                                        onDiscAPIListener.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(),  DiscountAPIResultEnum.DISCOUNT);
+                                                        discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(),  DiscountAPIResultEnum.DISCOUNT);
                                                     }
                                                 } else {
-                                                    onDiscAPIListener.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
+                                                    discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
                                                 }
                                             } else {
-                                                onDiscAPIListener.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
+                                                discAPICallback.onFinishCalculate(dmspcts[0].split("#")[0], DoubleHelper.parseDouble(dmspcts[0].split("#")[1]), 0, data.getITEM(), DiscountAPIResultEnum.DISCOUNT);
                                             }
                                         } catch (Exception e) {
                                             activity.runOnUiThread(new Runnable() {
@@ -181,9 +183,9 @@ public final class DiscAPIClient {
                             if (discAPIHeaderResponseJsonObject.getCODE() == 1) {
                                 for (DiscAPIHeaderDataResponseJsonObject data : discAPIHeaderResponseJsonObject.getDATA()) {
                                     if (data.getDISCOUNT() == 100) {
-                                        onDiscAPIListener.onFinishCalculate(data.getDMSNO(), 0, data.getQTY(), data.getPCODE(), DiscountAPIResultEnum.FREEGOOD);
+                                        discAPICallback.onFinishCalculate(data.getDMSNO(), 0, data.getQTY(), data.getPCODE(), DiscountAPIResultEnum.FREEGOOD);
                                     } else {
-                                        onDiscAPIListener.onFinishCalculate(data.getDMSNO(), data.getDISCOUNT(), 0, data.getPCODE(), DiscountAPIResultEnum.DISCOUNT);
+                                        discAPICallback.onFinishCalculate(data.getDMSNO(), data.getDISCOUNT(), 0, data.getPCODE(), DiscountAPIResultEnum.DISCOUNT);
                                     }
                                 }
                             } else if (discAPIHeaderResponseJsonObject.getCODE() == 0) {
