@@ -9,7 +9,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 30
         versionCode 1
-        versionName "0.0.0.4"
+        versionName "0.0.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -35,6 +35,8 @@ dependencies {
     // ADD DEPENDENCIES
     implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation 'com.squareup.okhttp3:okhttp:4.7.0'
     implementation 'com.wdullaer:materialdatetimepicker:3.2.0'
     implementation 'org.apache.commons:commons-io:1.3.2'
 }

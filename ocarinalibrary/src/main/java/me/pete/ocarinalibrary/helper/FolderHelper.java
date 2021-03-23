@@ -11,6 +11,18 @@ import java.io.File;
  */
 public final class FolderHelper {
     /**
+     * Tests whether the file denoted by this abstract pathname is a
+     * directory.
+     *
+     * @param path      Path of the directory.
+     * @return
+     */
+    public static boolean isDirectory(String path){
+        File file = new File(path);
+        return file.isDirectory();
+    }
+
+    /**
      * This function for create a folder
      * @param path          The path your folder location.
      * @param folderName    The your folder name.
