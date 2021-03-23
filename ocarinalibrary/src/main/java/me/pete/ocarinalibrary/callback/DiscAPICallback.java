@@ -25,4 +25,8 @@ public abstract class DiscAPICallback {
     public void onFinishCalculate(String mstCodeDisc, String productCode, double discountPercent, String productCodeFree, int freeQty, DiscountAPIResultEnum discountAPIResultEnum) {
 
     }
+
+    public void onFinishTask() {
+
+    }
 }

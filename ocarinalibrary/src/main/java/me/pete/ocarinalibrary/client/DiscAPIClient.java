@@ -230,6 +230,7 @@ public final class DiscAPIClient {
                         public void run() {
                             dialog.dismiss();
                             isCalculate = false;
+                            discAPICallback.onFinishTask();
                         }
                     });
 
