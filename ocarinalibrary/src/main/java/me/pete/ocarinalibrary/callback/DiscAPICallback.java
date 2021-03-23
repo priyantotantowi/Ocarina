@@ -6,7 +6,10 @@ public abstract class DiscAPICallback {
     /**
      * This called when you after get response from API.
      */
-    public abstract void onBeforeCalculate();
+    public void onBeforeCalculate() {
+
+    }
+
 
     /**
      * This called when after calculation discount on this library
@@ -15,9 +18,11 @@ public abstract class DiscAPICallback {
      * @param mstCodeDisc           A Discount Code you get.
      * @param productCode           A product code that get a discount.
      * @param discountPercent       Discount in percentage
-     * @param productCodeFree       A product code that get by free.
+     * @param productCodeFree       A product code that get by free
      * @param freeQty               Small qty of Free goods
      * @param discountAPIResultEnum Type of discount (Ex: discount, free goods or mix between discount and free goods)
      */
-    public abstract void onFinishCalculate(String mstCodeDisc, String productCode, double discountPercent, String productCodeFree, int freeQty, DiscountAPIResultEnum discountAPIResultEnum);
+    public void onFinishCalculate(String mstCodeDisc, String productCode, double discountPercent, String productCodeFree, int freeQty, DiscountAPIResultEnum discountAPIResultEnum) {
+
+    }
 }
