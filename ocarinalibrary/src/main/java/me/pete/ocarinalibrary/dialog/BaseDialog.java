@@ -124,6 +124,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
     }
 
     protected void setPinLocationObjects(PinLocationObject... pinLocations) {
+        pinLocationObjects = new ArrayList<>();
         pinLocationObjects.addAll(Arrays.asList(pinLocations));
     }
 
@@ -134,11 +135,13 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             myGoogleMap.clear();
             myGoogleMap.getUiSettings().setZoomControlsEnabled(true);
             myGoogleMap.setTrafficEnabled(true);
-            for (PinLocationObject pinLocationObject : pinLocationObjects) {
-                try {
-                    new pinTask(myGoogleMap, pinLocationObject.getLatLng(), pinLocationObject.getTitle()).execute();
-                } catch (Exception e) {
-                    Log.e("onMapReady", e.toString());
+            if(!pinLocationObjects.isEmpty()) {
+                for (PinLocationObject pinLocationObject : pinLocationObjects) {
+                    try {
+                        new pinTask(myGoogleMap, pinLocationObject.getLatLng(), pinLocationObject.getTitle()).execute();
+                    } catch (Exception e) {
+                        Log.e("onMapReady", e.toString());
+                    }
                 }
             }
 
