@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -74,7 +75,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
         if(neutralText.contentEquals("")) {
             txtNeutral.setVisibility(View.GONE);
         } else {
-            txtNeutral.setText(positiveText);
+            txtNeutral.setText(neutralText);
         }
 
         txtPositive.setOnClickListener(new View.OnClickListener() {
@@ -100,6 +101,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
 
         if(dialogTypeEnum == DialogTypeEnum.MAP) {
             mapFragment = (SupportMapFragment) activity.getSupportFragmentManager().findFragmentById(R.id.map);
+            mapFragment.getMapAsync(this);
         }
     }
 
@@ -122,10 +124,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
     }
 
     protected void setPinLocationObjects(PinLocationObject... pinLocations) {
-        pinLocationObjects = new ArrayList<>();
-        for(PinLocationObject pinLocationObject : pinLocations) {
-            pinLocationObjects.add(pinLocationObject);
-        }
+        pinLocationObjects.addAll(Arrays.asList(pinLocations));
     }
 
     @Override

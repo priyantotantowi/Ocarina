@@ -5,67 +5,67 @@ import androidx.appcompat.app.AppCompatActivity;
 import me.pete.ocarinalibrary.enumerator.DialogTypeEnum;
 import me.pete.ocarinalibrary.object.PinLocationObject;
 
-public class MaterialDialog extends BaseDialog {
+public class OcarinaDialog extends BaseDialog {
     private DialogTypeEnum dialogTypeEnum;
     private me.pete.ocarinalibrary.listener.OnClickListener onPositiveClicked, onNegativeClicked, onNeutralClicked;
     private String neutralText, negativeText, positiveText, titleText, messageText;
 
-    public MaterialDialog(@NonNull AppCompatActivity activity) {
+    public OcarinaDialog(@NonNull AppCompatActivity activity) {
         super(activity);
     }
 
-    public MaterialDialog cancelable(boolean cancelable) {
+    public OcarinaDialog cancelable(boolean cancelable) {
         setCancelable(cancelable);
         setCanceledOnTouchOutside(cancelable);
         return this;
     }
 
-    public MaterialDialog setViewType(DialogTypeEnum dialogTypeEnum) {
+    public OcarinaDialog setViewType(DialogTypeEnum dialogTypeEnum) {
         this.dialogTypeEnum = dialogTypeEnum;
         return this;
     }
 
-    public MaterialDialog setPositiveText(String text) {
+    public OcarinaDialog setPositiveText(String text) {
         this.positiveText = text;
         return this;
     }
 
-    public MaterialDialog setNegativeText(String text) {
+    public OcarinaDialog setNegativeText(String text) {
         this.negativeText = text;
         return this;
     }
 
-    public MaterialDialog setNeutralText(String text) {
+    public OcarinaDialog setNeutralText(String text) {
         this.neutralText = text;
         return this;
     }
 
-    public MaterialDialog setTitle(String titleText) {
+    public OcarinaDialog setTitle(String titleText) {
         this.titleText = titleText;
         return this;
     }
 
-    public MaterialDialog setMessage(String messageText) {
+    public OcarinaDialog setMessage(String messageText) {
         this.messageText = messageText;
         return this;
     }
 
-    public MaterialDialog setOnPositiveClicked(me.pete.ocarinalibrary.listener.OnClickListener onPositiveClicked) {
+    public OcarinaDialog setOnPositiveClicked(me.pete.ocarinalibrary.listener.OnClickListener onPositiveClicked) {
         this.onPositiveClicked = onPositiveClicked;
         return this;
     }
 
-    public MaterialDialog setOnNegativeClicked(me.pete.ocarinalibrary.listener.OnClickListener onNegativeClicked) {
+    public OcarinaDialog setOnNegativeClicked(me.pete.ocarinalibrary.listener.OnClickListener onNegativeClicked) {
         this.onNegativeClicked = onNegativeClicked;
         return this;
     }
 
-    public MaterialDialog setOnNeutralClicked(me.pete.ocarinalibrary.listener.OnClickListener onNeutralClicked) {
+    public OcarinaDialog setOnNeutralClicked(me.pete.ocarinalibrary.listener.OnClickListener onNeutralClicked) {
         this.onNeutralClicked = onNeutralClicked;
         return this;
     }
 
-    public MaterialDialog setPinLocation(PinLocationObject... pinLocations) {
+    public OcarinaDialog setPinLocation(PinLocationObject... pinLocations) {
         super.setPinLocationObjects(pinLocations);
         return this;
     }

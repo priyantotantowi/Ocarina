@@ -3,7 +3,6 @@ package me.pete.ocarinalibrary.object;
 import com.google.android.gms.maps.model.LatLng;
 
 import androidx.appcompat.app.AppCompatActivity;
-import me.pete.ocarinalibrary.dialog.MaterialDialog;
 
 public class PinLocationObject {
     private LatLng latLng;
