@@ -82,6 +82,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onPositiveClicked.onClick();
+                dismiss();
             }
         });
 
@@ -89,6 +90,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onNegativeClicked.onClick();
+                dismiss();
             }
         });
 
@@ -96,6 +98,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onNeutralClicked.onClick();
+                dismiss();
             }
         });
 
