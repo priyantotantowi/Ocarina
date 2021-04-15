@@ -7,7 +7,7 @@ import android.util.TypedValue;
 import androidx.core.content.ContextCompat;
 import me.pete.ocarinalibrary.R;
 
-public class ColorHelper {
+public final class ColorHelper {
     public static int getAccentColorFromThemeIfAvailable(Context context) {
         TypedValue typedValue = new TypedValue();
         // First, try the android:colorAccent

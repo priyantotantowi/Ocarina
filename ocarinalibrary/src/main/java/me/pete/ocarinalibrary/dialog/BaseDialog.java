@@ -1,9 +1,7 @@
 package me.pete.ocarinalibrary.dialog;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -60,9 +58,9 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
         txtNegative = findViewById(R.id.txtNegative);
         txtNeutral = findViewById(R.id.txtNeutral);
 
-        txtPositive.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
-        txtNegative.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
-        txtNeutral.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
+        txtPositive.setTextColor(ColorStateList.valueOf(ColorHelper.getAccentColorFromThemeIfAvailable(activity)));
+        txtNegative.setTextColor(ColorStateList.valueOf(ColorHelper.getAccentColorFromThemeIfAvailable(activity)));
+        txtNeutral.setTextColor(ColorStateList.valueOf(ColorHelper.getAccentColorFromThemeIfAvailable(activity)));
 
         if(titleText.contentEquals("")) {
             txtTitle.setText("Dialog");
