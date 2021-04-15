@@ -80,6 +80,12 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             txtPositive.setText(positiveText);
         }
 
+        if(negativeText.contentEquals("")) {
+            txtNegative.setVisibility(View.GONE);
+        } else {
+            txtNegative.setText(positiveText);
+        }
+
         if(neutralText.contentEquals("")) {
             txtNeutral.setVisibility(View.GONE);
         } else {
