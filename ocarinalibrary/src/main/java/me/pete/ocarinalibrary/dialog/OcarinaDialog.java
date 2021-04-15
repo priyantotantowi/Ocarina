@@ -70,9 +70,9 @@ public class OcarinaDialog extends BaseDialog {
         return this;
     }
 
-    @Override
-    public void setUsePolygon(boolean usePolygon) {
+    public OcarinaDialog setUsePolygonForMapDialog(boolean usePolygon) {
         super.setUsePolygon(usePolygon);
+        return this;
     }
 
     @Override
