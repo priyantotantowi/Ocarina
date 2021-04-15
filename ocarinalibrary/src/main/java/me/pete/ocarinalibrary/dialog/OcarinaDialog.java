@@ -71,6 +71,11 @@ public class OcarinaDialog extends BaseDialog {
     }
 
     @Override
+    public void setUsePolygon(boolean usePolygon) {
+        super.setUsePolygon(usePolygon);
+    }
+
+    @Override
     public void show() {
         setView(dialogTypeEnum);
         setConfiguration(titleText, messageText, positiveText, negativeText, neutralText,

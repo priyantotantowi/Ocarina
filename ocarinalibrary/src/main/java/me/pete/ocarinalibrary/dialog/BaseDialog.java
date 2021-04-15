@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -18,14 +19,18 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import me.pete.ocarinalibrary.R;
 import me.pete.ocarinalibrary.enumerator.DialogTypeEnum;
+import me.pete.ocarinalibrary.helper.ColorHelper;
 import me.pete.ocarinalibrary.helper.CoordinateHelper;
 import me.pete.ocarinalibrary.listener.OnGetCoordinateListener;
 import me.pete.ocarinalibrary.object.PinLocationObject;
@@ -33,6 +38,7 @@ import me.pete.ocarinalibrary.object.PinLocationObject;
 public class BaseDialog extends Dialog implements OnMapReadyCallback {
     private AppCompatActivity activity;
     private ArrayList<PinLocationObject> pinLocationObjects;
+    private boolean isUsePolygon;
     private DialogTypeEnum dialogTypeEnum;
     private GoogleMap myGoogleMap;
     private LatLng latLng;
@@ -53,6 +59,10 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
         txtPositive = findViewById(R.id.txtPositive);
         txtNegative = findViewById(R.id.txtNegative);
         txtNeutral = findViewById(R.id.txtNeutral);
+
+        txtPositive.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
+        txtNegative.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
+        txtNeutral.setTextColor(ColorStateList.valueOf(ContextCompat.getColor(getContext(), ColorHelper.getAccentColorFromThemeIfAvailable(activity))));
 
         if(titleText.contentEquals("")) {
             txtTitle.setText("Dialog");
@@ -108,6 +118,10 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
         }
     }
 
+    protected void setUsePolygon(boolean usePolygon) {
+        isUsePolygon = usePolygon;
+    }
+
     protected void setView(DialogTypeEnum dialogTypeEnum) {
         this.dialogTypeEnum = dialogTypeEnum;
         requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -152,6 +166,19 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
                 @SuppressLint("MissingPermission")
                 @Override
                 public void onLocation(double latitude, double longitude) {
+                    if(isUsePolygon) {
+                        ArrayList<LatLng> latLngs = new ArrayList<>();
+                        latLngs.add(new LatLng(latitude, longitude));
+                        for (PinLocationObject pinLocationObject : pinLocationObjects) {
+                            PolylineOptions polylineOptions = new PolylineOptions();
+                            polylineOptions.clickable(false);
+                            polylineOptions.color(ColorHelper.getAccentColorFromThemeIfAvailable(activity));
+                            polylineOptions.add(new LatLng(latitude, longitude));
+                            polylineOptions.add(pinLocationObject.getLatLng());
+                            Polyline polyline = myGoogleMap.addPolyline(polylineOptions);
+                        }
+                    }
+
                     latLng = new LatLng(latitude, longitude);
                     myGoogleMap.setMyLocationEnabled(true);
                     myGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
