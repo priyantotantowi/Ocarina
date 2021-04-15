@@ -30,6 +30,7 @@ import me.pete.ocarinalibrary.R;
 import me.pete.ocarinalibrary.enumerator.DialogTypeEnum;
 import me.pete.ocarinalibrary.helper.ColorHelper;
 import me.pete.ocarinalibrary.helper.CoordinateHelper;
+import me.pete.ocarinalibrary.helper.StringHelper;
 import me.pete.ocarinalibrary.listener.OnGetCoordinateListener;
 import me.pete.ocarinalibrary.object.PinLocationObject;
 
@@ -62,31 +63,31 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
         txtNegative.setTextColor(ColorStateList.valueOf(ColorHelper.getAccentColorFromThemeIfAvailable(activity)));
         txtNeutral.setTextColor(ColorStateList.valueOf(ColorHelper.getAccentColorFromThemeIfAvailable(activity)));
 
-        if(titleText.contentEquals("")) {
+        if(StringHelper.removeNull(titleText).contentEquals("")) {
             txtTitle.setText("Dialog");
         } else {
             txtTitle.setText(titleText);
         }
 
-        if(titleText.contentEquals("")) {
+        if(StringHelper.removeNull(titleText).contentEquals("")) {
             txtMessage.setText("Are you sure?");
         } else {
             txtMessage.setText(messageText);
         }
 
-        if(positiveText.contentEquals("")) {
+        if(StringHelper.removeNull(positiveText).contentEquals("")) {
             txtPositive.setVisibility(View.GONE);
         } else {
             txtPositive.setText(positiveText);
         }
 
-        if(negativeText.contentEquals("")) {
+        if(StringHelper.removeNull(negativeText).contentEquals("")) {
             txtNegative.setVisibility(View.GONE);
         } else {
             txtNegative.setText(negativeText);
         }
 
-        if(neutralText.contentEquals("")) {
+        if(StringHelper.removeNull(neutralText).contentEquals("")) {
             txtNeutral.setVisibility(View.GONE);
         } else {
             txtNeutral.setText(neutralText);
