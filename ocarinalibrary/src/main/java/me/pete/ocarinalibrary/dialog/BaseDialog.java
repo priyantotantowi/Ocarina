@@ -47,6 +47,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
     public BaseDialog(@NonNull AppCompatActivity activity) {
         super(activity);
         this.activity = activity;
+        pinLocationObjects = new ArrayList<>();
     }
 
     protected void setConfiguration(String titleText, String messageText, String positiveText, String negativeText, String neutralText,
