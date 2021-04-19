@@ -98,6 +98,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onPositiveClicked.onClick();
+                activity.getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
                 dismiss();
             }
         });
@@ -106,6 +107,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onNegativeClicked.onClick();
+                activity.getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
                 dismiss();
             }
         });
@@ -114,6 +116,7 @@ public class BaseDialog extends Dialog implements OnMapReadyCallback {
             @Override
             public void onClick(View v) {
                 onNeutralClicked.onClick();
+                activity.getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
                 dismiss();
             }
         });
