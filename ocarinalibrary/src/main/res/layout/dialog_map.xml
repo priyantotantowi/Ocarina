@@ -39,8 +39,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_weight="1"
-        tools:context=".Activity.Coverage.CoverageActivity" />
+        android:layout_weight="1" />
 
     <View
         android:layout_width="0dp"
