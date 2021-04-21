@@ -41,85 +41,95 @@ public final class CoordinateHelper {
 
     @SuppressLint("LongLogTag")
     private void getCoordinateUsingGPSOnly(final Context context, final OnGetCoordinateListener onGetCoordinateListener) {
-        check = true;
-        time = 0;
-        String contextLocation = Context.LOCATION_SERVICE;
-        LocationManager locationManager = (LocationManager) context.getSystemService(contextLocation);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            onGetCoordinateListener.onLocation(0.0f, 0.0f);
-            Log.i("CoordinateHelper-getCoordinate", "GPS OFF");
-        } else {
-            try {
-                String provider = locationManager.getBestProvider(CoordinateHelper.onGetCriteria(), true);
-                location = locationManager.getLastKnownLocation(provider);
-                Log.i("CoordinateHelper", "getCoordinateUsingGPSOnly");
-                if (location != null) {
-                    check = false;
-                    onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
-                    Log.i("CoordinateHelper-getCoordinate", "Location: " + location.getLatitude() + " " + location.getLongitude());
-                } else {
-                    onGetCoordinateListener.onLocation(0, 0);
-                    //locationManager.requestLocationUpdates(provider, 2000, 1, locationListener);
+        try {
+            check = true;
+            time = 0;
+            String contextLocation = Context.LOCATION_SERVICE;
+            LocationManager locationManager = (LocationManager) context.getSystemService(contextLocation);
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                onGetCoordinateListener.onLocation(0.0f, 0.0f);
+                Log.i("CoordinateHelper-getCoordinate", "GPS OFF");
+            } else {
+                try {
+                    String provider = locationManager.getBestProvider(CoordinateHelper.onGetCriteria(), true);
+                    location = locationManager.getLastKnownLocation(provider);
+                    Log.i("CoordinateHelper", "getCoordinateUsingGPSOnly");
+                    if (location != null) {
+                        check = false;
+                        onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
+                        Log.i("CoordinateHelper-getCoordinate", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                    } else {
+                        onGetCoordinateListener.onLocation(0, 0);
+                        //locationManager.requestLocationUpdates(provider, 2000, 1, locationListener);
+                    }
+                } catch (SecurityException e) {
+                    onGetCoordinateListener.onLocation(0.0f, 0.0f);
+                    Log.i("CoordinateHelper-getCoordinate", "GPS SecurityException");
+                } catch (Exception e) {
+                    onGetCoordinateListener.onLocation(0.0f, 0.0f);
+                    Log.i("CoordinateHelper-getCoordinate", "GPS Exception " + e.toString());
                 }
-            } catch (SecurityException e) {
-                onGetCoordinateListener.onLocation(0.0f, 0.0f);
-                Log.i("CoordinateHelper-getCoordinate", "GPS SecurityException");
-            } catch (Exception e) {
-                onGetCoordinateListener.onLocation(0.0f, 0.0f);
-                Log.i("CoordinateHelper-getCoordinate", "GPS Exception " + e.toString());
             }
+        } catch (Exception e) {
+            Log.e("CoordinateHelper", e.toString());
+            onGetCoordinateListener.onLocation(0.0f, 0.0f);
         }
     }
 
     private void getCoordinateGooglePlayService(final Context context, final OnGetCoordinateListener onGetCoordinateListener) {
-        check = true;
-        time = 0;
-        LocationCallback locationCallback = new LocationCallback() {
-            @SuppressLint("LongLogTag")
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-                List<Location> locationList = locationResult.getLocations();
-                if (locationList.size() > 0) {
-                    //The last location in the list is the newest
-                    location = locationList.get(locationList.size() - 1);
-                    check = false;
-                    Log.i("CoordinateHelper", "getCoordinateGooglePlayService");
-                    Log.i("CoordinateHelper-GMS", "Location: " + location.getLatitude() + " " + location.getLongitude());
-                    onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
-                } else {
-                    Log.i("CoordinateHelper", "Masuk else");
-                    getCoordinateUsingGPSOnly(context, onGetCoordinateListener);
+        try {
+            check = true;
+            time = 0;
+            LocationCallback locationCallback = new LocationCallback() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                    List<Location> locationList = locationResult.getLocations();
+                    if (locationList.size() > 0) {
+                        //The last location in the list is the newest
+                        location = locationList.get(locationList.size() - 1);
+                        check = false;
+                        Log.i("CoordinateHelper", "getCoordinateGooglePlayService");
+                        Log.i("CoordinateHelper-GMS", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                        onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
+                    } else {
+                        Log.i("CoordinateHelper", "Masuk else");
+                        getCoordinateUsingGPSOnly(context, onGetCoordinateListener);
+                    }
+                    fusedLocationClient.removeLocationUpdates(this);
                 }
-                fusedLocationClient.removeLocationUpdates(this);
-            }
-        };
+            };
 
-        if(isGooglePlayServicesAvailable(context)) {
-            fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-            LocationRequest locationRequest = new LocationRequest();
-            locationRequest.setInterval(1000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            fusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            if (location != null) {
-                                onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
-                            } else {
+            if(isGooglePlayServicesAvailable(context)) {
+                fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+                LocationRequest locationRequest = new LocationRequest();
+                locationRequest.setInterval(1000);
+                locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                fusedLocationClient.getLastLocation()
+                        .addOnSuccessListener(new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location != null) {
+                                    onGetCoordinateListener.onLocation(location.getLatitude(), location.getLongitude());
+                                } else {
+                                    getCoordinateUsingGPSOnly(context, onGetCoordinateListener);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.i("CoordinateHelper-Last", e.toString());
                                 getCoordinateUsingGPSOnly(context, onGetCoordinateListener);
                             }
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.i("CoordinateHelper-Last", e.toString());
-                            getCoordinateUsingGPSOnly(context, onGetCoordinateListener);
-                        }
-                    });
-        } else {
-            Log.i("CoordinateHelper-Last", "Google play service not available");
+                        });
+            } else {
+                Log.i("CoordinateHelper-Last", "Google play service not available");
+            }
+        } catch (Exception e) {
+            Log.e("CoordinateHelper", e.toString());
+            onGetCoordinateListener.onLocation(0.0f, 0.0f);
         }
     }
 
@@ -201,40 +211,44 @@ public final class CoordinateHelper {
      */
     @SuppressLint({"LongLogTag", "MissingPermission"})
     public static void onRequestUpdate(Context context) {
-        LocationCallback locationCallback = new LocationCallback() {
-            @SuppressLint("LongLogTag")
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                super.onLocationResult(locationResult);
-            }
-        };
+        try {
+            LocationCallback locationCallback = new LocationCallback() {
+                @SuppressLint("LongLogTag")
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    super.onLocationResult(locationResult);
+                }
+            };
 
-        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
-        LocationRequest locationRequest = new LocationRequest();
-        locationRequest.setInterval(1000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+            FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
+            LocationRequest locationRequest = new LocationRequest();
+            locationRequest.setInterval(1000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
 
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        String provider = locationManager.getBestProvider(CoordinateHelper.onGetCriteria(), true);
-        LocationListener locationListener = new LocationListener() {
-            public void onLocationChanged(Location location) {
-                Log.i("CoordinateHelper-UpdateGPS", "Location: " + location.getLatitude() + " " + location.getLongitude());
-            }
+            LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            String provider = locationManager.getBestProvider(CoordinateHelper.onGetCriteria(), true);
+            LocationListener locationListener = new LocationListener() {
+                public void onLocationChanged(Location location) {
+                    Log.i("CoordinateHelper-UpdateGPS", "Location: " + location.getLatitude() + " " + location.getLongitude());
+                }
 
-            public void onProviderDisabled(String provider) {
-                Log.i("CoordinateHelper-Update", "GPS not active");
-            }
+                public void onProviderDisabled(String provider) {
+                    Log.i("CoordinateHelper-Update", "GPS not active");
+                }
 
-            public void onProviderEnabled(String provider) {
-                Log.i("CoordinateHelper-Update", "GPS is active");
-            }
+                public void onProviderEnabled(String provider) {
+                    Log.i("CoordinateHelper-Update", "GPS is active");
+                }
 
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-            }
-        };
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+                }
+            };
 
-        locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
+            locationManager.requestLocationUpdates(provider, 1000, 1, locationListener);
+        } catch (Exception e) {
+            Log.e("CoordinateHelper", e.toString());
+        }
     }
 
     /**
