@@ -3,6 +3,10 @@ package me.pete.ocarinalibrary.helper;
 import android.content.Context;
 import android.text.format.Formatter;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by Priyanto Tantowi.
  *
@@ -133,6 +137,26 @@ public final class StringHelper {
         String result = "";
         if(value != null) {
             result = value;
+        }
+        return result;
+    }
+
+    /**
+     * This function returns string of MD5 Hash from some text.
+     */
+    public static String toMD5Hash(String value) {
+        String result = "";
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            byte[] hashInBytes = messageDigest.digest(value.getBytes(StandardCharsets.UTF_8));
+
+            StringBuilder stringBuilder = new StringBuilder();
+            for (byte b : hashInBytes) {
+                stringBuilder.append(String.format("%02x", b));
+            }
+            result = stringBuilder.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
         return result;
     }
