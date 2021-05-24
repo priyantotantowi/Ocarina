@@ -3,6 +3,6 @@
 ```gradle
 dependencies {
   ...
-  implementation 'com.github.priyantotantowi:Ocarina:0.0.2.8'
+  implementation 'com.github.priyantotantowi:Ocarina:0.0.3.0'
 }
 ```
