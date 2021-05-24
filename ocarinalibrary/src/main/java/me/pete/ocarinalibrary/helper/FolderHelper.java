@@ -1,5 +1,7 @@
 package me.pete.ocarinalibrary.helper;
 
+import android.content.Context;
+import android.os.Build;
 import android.os.Environment;
 
 import java.io.File;
@@ -27,10 +29,17 @@ public final class FolderHelper {
      * @param path          The path your folder location.
      * @param folderName    The your folder name.
      */
-    public static void create(String path, String folderName){
-        File file = new File(Environment.getExternalStorageDirectory().toString() + path + folderName);
-        if (!file.exists()){
-            file.mkdir();
+    public static void create(Context context, String path, String folderName){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            File file = new File(context.getExternalFilesDir(null).getAbsolutePath() + path + folderName);
+            if (!file.exists()) {
+                file.mkdir();
+            }
+        } else {
+            File file = new File(Environment.getExternalStorageDirectory().toString() + path + folderName);
+            if (!file.exists()) {
+                file.mkdir();
+            }
         }
     }
 }
