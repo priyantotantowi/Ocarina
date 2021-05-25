@@ -19,6 +19,6 @@ Add this to your module's `build.gradle` file (make sure the version matches the
 ```gradle
 dependencies {
   ...
-  implementation 'com.github.priyantotantowi:Ocarina:0.0.3.2'
+  implementation 'com.github.priyantotantowi:Ocarina:0.0.3.3'
 }
 ```

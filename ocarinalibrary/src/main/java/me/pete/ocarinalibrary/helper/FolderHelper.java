@@ -32,7 +32,7 @@ public final class FolderHelper {
      * @param folderName    The your folder name.
      */
     public static void create(String path, String folderName){
-        File file = new File(path + folderName);
+        File file = new File(path + "/" + folderName);
         if (!file.exists()) {
             file.mkdir();
         }
