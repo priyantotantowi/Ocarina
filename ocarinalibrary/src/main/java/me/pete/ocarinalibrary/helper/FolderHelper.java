@@ -28,12 +28,11 @@ public final class FolderHelper {
 
     /**
      * This function for create a folder
-     * @param context       Your context for find package
      * @param path          The path your folder location.
      * @param folderName    The your folder name.
      */
-    public static void create(Context context, String path, String folderName){
-        File file = new File(getExternalStorageDirectory(context) + path + folderName);
+    public static void create(String path, String folderName){
+        File file = new File(path + folderName);
         if (!file.exists()) {
             file.mkdir();
         }
