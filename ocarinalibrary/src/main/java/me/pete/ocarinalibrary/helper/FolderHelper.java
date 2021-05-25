@@ -28,10 +28,22 @@ public final class FolderHelper {
 
     /**
      * This function for create a folder
+     * @param context       Your context for find package
      * @param path          The path your folder location.
      * @param folderName    The your folder name.
      */
     public static void create(Context context, String path, String folderName){
+        File file = new File(getExternalStorageDirectory(context) + path + folderName);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+    }
+
+    /**
+     * This function for create a folder
+     * @param context       Your context for find package
+     */
+    public static String getExternalStorageDirectory(Context context) {
         int targetSdkVersion = 0;
         try {
             PackageInfo packageInfo =
@@ -41,15 +53,9 @@ public final class FolderHelper {
             e.printStackTrace();
         }
         if (targetSdkVersion >= Build.VERSION_CODES.Q) {
-            File file = new File(context.getExternalFilesDir(null).getAbsolutePath() + path + folderName);
-            if (!file.exists()) {
-                file.mkdir();
-            }
+            return context.getExternalFilesDir(null).getAbsolutePath();
         } else {
-            File file = new File(Environment.getExternalStorageDirectory().toString() + path + folderName);
-            if (!file.exists()) {
-                file.mkdir();
-            }
+            return  Environment.getExternalStorageDirectory().toString();
         }
     }
 }
