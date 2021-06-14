@@ -51,6 +51,41 @@ public final class FileHelper {
     }
 
     /**
+     * This function return get type of file
+     *
+     * @param file          Source file.
+     * @return
+     */
+    public static String getType(File file) {
+        return getType(file.getAbsolutePath());
+    }
+
+    /**
+     * This function return get type of file
+     *
+     * @param filePath      Path of file location.
+     * @return
+     */
+    public static String getType(String filePath) {
+        boolean isFile = false;
+        String result = "";
+        for(int index = filePath.length(); index == 0; index--) {
+            if(!filePath.substring(index-1, index).contentEquals(".")) {
+                result = filePath.substring(index-1, index) + result;
+            } else {
+                isFile = true;
+                break;
+            }
+        }
+
+        if(!isFile) {
+            result = "Folder";
+        }
+
+        return result;
+    }
+
+    /**
      * Tests whether the file or directory denoted by this abstract path of directory
      * and filename
      *
