@@ -3,6 +3,8 @@ package me.pete.ocarinalibrary.helper;
 import android.app.Activity;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
@@ -150,7 +152,7 @@ public final class DateTimeHelper {
      * @param onDateSetListener How the parent is notified that the date is set.
      * @param isMinCurrentDate  Set true if you can't pick old date.
      */
-    public static void dialogDatePickerLight(Activity activity, String title, final OnDateSetListener onDateSetListener, boolean isMinCurrentDate) {
+    public static void dialogDatePickerLight(AppCompatActivity activity, String title, final OnDateSetListener onDateSetListener, boolean isMinCurrentDate) {
         Calendar cur_calender = Calendar.getInstance();
         DatePickerDialog datePicker = DatePickerDialog.newInstance(
                 new DatePickerDialog.OnDateSetListener() {
@@ -176,7 +178,7 @@ public final class DateTimeHelper {
         if(isMinCurrentDate) {
             datePicker.setMinDate(cur_calender);
         }
-        datePicker.show(activity.getFragmentManager(), "Datepickerdialog");
+        datePicker.show(activity.getSupportFragmentManager(), "Datepickerdialog");
     }
 
     /**
@@ -186,7 +188,7 @@ public final class DateTimeHelper {
      * @param onTimeSetListener How the parent is notified that the time is set.
      * @param is24HourMode      Set true if you want 24 hour time mode.
      */
-    public static void dialogTimePickerLight(Activity activity, String title, final OnTimeSetListener onTimeSetListener, boolean is24HourMode) {
+    public static void dialogTimePickerLight(AppCompatActivity activity, String title, final OnTimeSetListener onTimeSetListener, boolean is24HourMode) {
         TimePickerDialog timePickerDialog = TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
@@ -200,7 +202,7 @@ public final class DateTimeHelper {
         }
         timePickerDialog.enableSeconds(false);
         timePickerDialog.setThemeDark(false);
-        timePickerDialog.show(activity.getFragmentManager(), "Datepickerdialog");
+        timePickerDialog.show(activity.getSupportFragmentManager(), "Datepickerdialog");
     }
 
     /**
