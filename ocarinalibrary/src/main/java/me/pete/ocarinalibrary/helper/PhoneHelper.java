@@ -13,6 +13,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.os.StrictMode;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.Settings;
@@ -23,8 +24,12 @@ import android.view.inputmethod.InputMethodManager;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
+import java.net.URL;
+import java.net.URLConnection;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -332,5 +337,25 @@ public final class PhoneHelper {
         } else {
             v.vibrate(seconds * 1000);
         }
+    }
+	
+	 /**
+     * This function for getting IP Public Programmatically via API
+     */
+	public static  String getIPPublic (){
+        String result = "";
+        try {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            URL myIp = new URL("https://checkip.amazonaws.com/");
+            URLConnection c = myIp.openConnection();
+            c.setConnectTimeout(1000);
+            c.setReadTimeout(1000);
+            BufferedReader in = new BufferedReader(new InputStreamReader(c.getInputStream()));
+            result = in.readLine();
+        }catch (Exception e){
+
+        }
+        return result;
     }
 }
