@@ -32,6 +32,7 @@ import javax.net.ssl.X509TrustManager;
 import me.pete.ocarinalibrary.enumerator.BodyPostTypeEnum;
 import me.pete.ocarinalibrary.enumerator.RequestMethodEnum;
 import me.pete.ocarinalibrary.listener.OnCallbackListener;
+import me.pete.ocarinalibrary.listener.OnDownloadListener;
 import me.pete.ocarinalibrary.listener.OnReachableListener;
 import me.pete.ocarinalibrary.listener.OnRequestListener;
 import me.pete.ocarinalibrary.manager.RequestBodyManager;
@@ -60,7 +61,6 @@ public final class HttpHelper {
     private int timeout = 0;
     private String url = "";
     private String httpRawBody = "";
-   // private String response = "";
     Uri uri;
 
     private BodyPostTypeEnum bodyPostTypeEnum;
@@ -193,7 +193,7 @@ public final class HttpHelper {
                             final String res = response.body().string();
                             Log.i("HttpHelper-onResponse", res);
                             response.close();
-                            onCallbackListener.onResponse(res);
+                            onCallbackListener.onResponse(response.code(), res);
                         } catch (Exception e) {
                             Log.i("HttpHelper-onResponse", e.toString());
                             onCallbackListener.onFailure(e.toString());
@@ -255,7 +255,7 @@ public final class HttpHelper {
 
             try {
                 Response response = okHttpClient.newCall(request).execute();
-                onCallbackListener.onResponse(response.body().toString());
+                onCallbackListener.onResponse(response.code(), response.body().toString());
             } catch (Exception e) {
                 Log.e("HttpHelper-connect", e.toString());
                 onCallbackListener.onFailure(e.toString());
@@ -355,7 +355,7 @@ public final class HttpHelper {
                             final String res = response.body().string();
                             Log.i("HttpHelper-onResponse", res);
                             response.close();
-                            onCallbackListener.onResponse(res);
+                            onCallbackListener.onResponse(response.code(), res);
                         } catch (Exception e) {
                             Log.i("HttpHelper-onResponse", e.toString());
                         }
@@ -377,17 +377,17 @@ public final class HttpHelper {
      * This class handling download file from API. You cant using method request
      * Post or Get to download file.
      */
-    public class Download {
+    public static class Download {
         private boolean isProgressShow = false;
         private Context context;
         private int progressStyle;
-        private OnCallbackListener onCallbackListener;
+        private OnDownloadListener onDownloadListener;
         private ProgressDialog progressDialog;
         private RequestMethodEnum requestMethodEnum;
         private String filename, path, url, message = "", rawbody = "";
 
-        public Download(Context context, String url, RequestMethodEnum requestMethodEnum, String path, String filename, boolean isProgressShow, int progressStyle, OnCallbackListener onCallbackListener) {
-            this.onCallbackListener = onCallbackListener;
+        public Download(Context context, String url, RequestMethodEnum requestMethodEnum, String path, String filename, boolean isProgressShow, int progressStyle, OnDownloadListener onDownloadListener) {
+            this.onDownloadListener = onDownloadListener;
             this.context = context;
             this.filename = filename;
             this.path = path;
@@ -398,8 +398,8 @@ public final class HttpHelper {
             new onDownloadTask().execute();
         }
 
-        public Download(Context context, String url, RequestMethodEnum requestMethodEnum, String rawbody, String path, String filename, boolean isProgressShow, int progressStyle, OnCallbackListener onCallbackListener) {
-            this.onCallbackListener = onCallbackListener;
+        public Download(Context context, String url, RequestMethodEnum requestMethodEnum, String rawbody, String path, String filename, boolean isProgressShow, int progressStyle, OnDownloadListener onDownloadListener) {
+            this.onDownloadListener = onDownloadListener;
             this.context = context;
             this.filename = filename;
             this.path = path;
@@ -431,7 +431,7 @@ public final class HttpHelper {
                             if (new File(path + filename).exists()) {
                                 new File(path + filename).delete();
                             }
-                            onCallbackListener.onFailure(message);
+                            onDownloadListener.onFailed();
                             dialog.dismiss();
                         }
                     });
@@ -538,20 +538,20 @@ public final class HttpHelper {
                 File file = new File(path + filename);
                 if (file.exists()) {
                     if (file.length() > 0) {
-                        onCallbackListener.onResponse(message);
+                        onDownloadListener.onSuccess();
                     } else {
                         file.delete();
                         if (isFileExistOnServer) {
-                            onCallbackListener.onFailure(message);
+                            onDownloadListener.onFailed();
                         } else {
-                            onCallbackListener.onResponse(message);
+                            onDownloadListener.onSuccess();
                         }
                     }
                 } else {
                     if (isFileExistOnServer) {
-                        onCallbackListener.onFailure(message);
+                        onDownloadListener.onFailed();
                     } else {
-                        onCallbackListener.onResponse(message);
+                        onDownloadListener.onSuccess();
                     }
                 }
             }
