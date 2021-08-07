@@ -241,40 +241,6 @@ public final class PhoneHelper {
 
     }
 
-    /**
-     * This function returns boolean value. True for GPS is active and false for GPS is not active
-     */
-    public static boolean getGPSActive(Context context) {
-        int targetSdkVersion = 0;
-        try {
-            PackageInfo packageInfo =
-                    context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        if (targetSdkVersion >= Build.VERSION_CODES.KITKAT) {
-            try {
-                int locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-                if (locationMode == Settings.Secure.LOCATION_MODE_HIGH_ACCURACY){
-                    return true;
-                } else if (locationMode == Settings.Secure.LOCATION_MODE_SENSORS_ONLY){
-                    return true;
-                } else if (locationMode == Settings.Secure.LOCATION_MODE_BATTERY_SAVING){
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch (Settings.SettingNotFoundException e) {
-                return false;
-            }
-        } else {
-            String provider = Settings.Secure.getString(context.getContentResolver(),
-                    Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            return provider.contains("gps") == true;
-        }
-    }
-
     private static void onConfirmationMakeACall() {
         new MaterialDialog.Builder(activity)
                 .title("Confirmation")
