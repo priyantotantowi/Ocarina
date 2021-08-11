@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -156,20 +157,19 @@ public final class PhoneHelper {
      * This function returns boolean value. True for GPS is active and false for GPS is not active
      */
     public static boolean isGPSActive(Context context) {
-        String locationProviders;
-        int locationMode = 0;
-
-        try {
-            locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-        } catch (Settings.SettingNotFoundException e) {
-            return false;
-        }
-
         // TODO: If locationMode greater than 0 then active else not active
-        if(locationMode > 0) {
-            return true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            // This is new method provided in API 28
+            LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            return lm.isLocationEnabled();
         } else {
-            return false;
+            // This is Deprecated in API 28
+            LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+            if(manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 
